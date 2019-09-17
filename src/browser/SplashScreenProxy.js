@@ -123,6 +123,7 @@ function readPreferencesFromCfg(cfg) {
         splashScreenDelay = parseInt(splashScreenDelay, 10);
 
         imageSrc = cfg.getPreferenceValue('SplashScreen') || imageSrc;
+        imageSrc = new URL(imageSrc, location.href).href;
         bgColor = cfg.getPreferenceValue('SplashScreenBackgroundColor') || bgColor;
         splashImageWidth = cfg.getPreferenceValue('SplashScreenWidth') || splashImageWidth;
         splashImageHeight = cfg.getPreferenceValue('SplashScreenHeight') || splashImageHeight;

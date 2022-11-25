@@ -53,6 +53,7 @@ public class SplashScreen extends CordovaPlugin {
     // Cordova 3.x.x has a copy of this plugin bundled with it (SplashScreenInternal.java).
     // Enable functionality only if running on 4.x.x.
     private static final boolean HAS_BUILT_IN_SPLASH_SCREEN = Integer.valueOf(CordovaWebView.CORDOVA_VERSION.split("\\.")[0]) < 4;
+    private static final boolean USE_ANDROID_S_SPLASHSCREEN = Integer.valueOf(CordovaWebView.CORDOVA_VERSION.split("\\.")[0]) >= 11;
     private static final int DEFAULT_SPLASHSCREEN_DURATION = 3000;
     private static final int DEFAULT_FADE_DURATION = 500;
     private static Dialog splashDialog;
@@ -92,6 +93,13 @@ public class SplashScreen extends CordovaPlugin {
         return drawableId;
     }
 
+    private static String getLegacyPrefName(String name) {
+        if (USE_ANDROID_S_SPLASHSCREEN) {
+            return name + "Legacy";
+        }
+        return name;
+    }
+
     @Override
     protected void pluginInitialize() {
         if (HAS_BUILT_IN_SPLASH_SCREEN) {
@@ -111,7 +119,7 @@ public class SplashScreen extends CordovaPlugin {
         orientation = cordova.getActivity().getResources().getConfiguration().orientation;
 
         if (firstShow) {
-            boolean autoHide = preferences.getBoolean("AutoHideSplashScreen", true);
+            boolean autoHide = preferences.getBoolean(getLegacyPrefName("AutoHideSplashScreen"), true);
             showSplashScreen(autoHide);
         }
 
@@ -132,8 +140,8 @@ public class SplashScreen extends CordovaPlugin {
     }
 
     private int getFadeDuration () {
-        int fadeSplashScreenDuration = preferences.getBoolean("FadeSplashScreen", true) ?
-            preferences.getInteger("FadeSplashScreenDuration", DEFAULT_FADE_DURATION) : 0;
+        int fadeSplashScreenDuration = preferences.getBoolean(getLegacyPrefName("FadeSplashScreen"), true) ?
+            preferences.getInteger(getLegacyPrefName("FadeSplashScreenDuration"), DEFAULT_FADE_DURATION) : 0;
 
         if (fadeSplashScreenDuration < 30) {
             // [CB-9750] This value used to be in decimal seconds, so we will assume that if someone specifies 10
@@ -275,7 +283,7 @@ public class SplashScreen extends CordovaPlugin {
      */
     @SuppressWarnings("deprecation")
     private void showSplashScreen(final boolean hideAfterDelay) {
-        final int splashscreenTime = preferences.getInteger("SplashScreenDelay", DEFAULT_SPLASHSCREEN_DURATION);
+        final int splashscreenTime = preferences.getInteger(getLegacyPrefName("SplashScreenDelay"), DEFAULT_SPLASHSCREEN_DURATION);
         final int drawableId = getSplashId();
 
         final int fadeSplashScreenDuration = getFadeDuration();

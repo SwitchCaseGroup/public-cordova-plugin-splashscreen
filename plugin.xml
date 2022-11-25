@@ -29,7 +29,7 @@
     <issue>https://github.com/apache/cordova-plugin-splashscreen/issues</issue>
 
     <engines>
-        <engine name="cordova-android" version=">=3.6.0 <11.0.0" /><!-- Requires CordovaPlugin.preferences -->
+        <engine name="cordova-android" version=">=3.6.0" /><!-- Requires CordovaPlugin.preferences -->
         <engine name="cordova-windows" version=">=4.4.0" />
     </engines>
 
@@ -47,6 +47,8 @@
         <js-module src="www/splashscreen.js" name="SplashScreen">
             <clobbers target="navigator.splashscreen" />
         </js-module>
+
+        <hook type="after_prepare" src="src/android/setupLegacy.js" />
     </platform>
 
     <!-- windows -->

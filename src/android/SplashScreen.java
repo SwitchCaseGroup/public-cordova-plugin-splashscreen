@@ -322,8 +322,8 @@ public class SplashScreen extends CordovaPlugin {
                 splashImageView.setBackgroundColor(preferences.getInteger("backgroundColor", Color.BLACK));
 
                 if (isMaintainAspectRatio()) {
-                    // CENTER_CROP scale mode is equivalent to CSS "background-size:contain"
-                    splashImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                    // CENTER_CROP scale mode is equivalent to CSS "background-size:cover"
+                    splashImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 }
                 else {
                     // FIT_XY scales image non-uniformly to fit into image view.
